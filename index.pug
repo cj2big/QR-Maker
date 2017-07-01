@@ -1,0 +1,13 @@
+extends ./templates/layout.pug
+
+block styles_and_scripts
+  include ./templates/styles_and_scripts.pug
+
+block bottom_scripts
+  script(src="js/index.js")
+
+block title
+  title My Page Title
+
+block content
+  include ./templates/index/main.pug

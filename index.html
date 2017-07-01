@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.8.0/js/canvas-to-blob.min.js"></script>
+    <title>My Page Title</title>
+  </head>
+  <body>
+    <div id="QRapp">
+      <h1>QR maker</h1>
+      <div class="main-wrapper">
+        <div class="qr-options row">
+          <div class="input-field col s12">
+            <label for="qrUrl">QR Code 連結</label>
+            <input v-model="qrUrl" type="text">
+          </div>
+          <div class="qr-size col s3">
+            <label>尺寸:</label>
+            <input v-model="qrSize" :min="qrMin" :max="qrMax" type="number">
+            <label>px</label>
+          </div>
+          <div class="col s3">
+            <label>logo</label>
+            <input v-model="logoText" type="text">
+          </div>
+          <div class="col s3">
+            <label>前景色</label>
+            <input v-model="qrColor1" type="color">
+          </div>
+          <div class="col s3">
+            <label>背景色</label>
+            <input v-model="qrColor2" type="color">
+          </div>
+          <div class="col s3">
+            <label>LOGO文字色</label>
+            <input v-model="qrColor3" type="color">
+          </div>
+          <div class="col s3">
+            <label>LOGO描邊色</label>
+            <input v-model="qrColor4" type="color">
+          </div>
+        </div>
+        <canvas class="qr-code" id="qrCode" v-show="qrCode"></canvas>
+        <div class="invalid-info" v-show="!qrCode"><span>請輸入 QR Code 連結</span></div>
+        <div class="row">
+          <button @click="downloadQRCode">下載</button>
+        </div>
+      </div>
+    </div>
+    <script src="js/index.js"></script>
+  </body>
+</html>

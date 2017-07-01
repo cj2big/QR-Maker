@@ -1,0 +1,33 @@
+#QRapp
+  h1
+    | QR maker
+  .main-wrapper
+    .qr-options.row
+      .input-field.col.s12
+        label(for='qrUrl') QR Code 連結
+        input(v-model='qrUrl', type='text')
+      .qr-size.col.s3
+        label 尺寸:
+        input(v-model='qrSize', :min='qrMin', :max='qrMax', type='number')
+        label px
+      .col.s3
+        label logo
+        input(v-model='logoText', type='text')
+      .col.s3
+        label 前景色
+        input(v-model='qrColor1', type='color')
+      .col.s3
+        label 背景色
+        input(v-model='qrColor2', type='color')
+      .col.s3
+        label LOGO文字色
+        input(v-model='qrColor3', type='color')
+      .col.s3
+        label LOGO描邊色
+        input(v-model='qrColor4', type='color')
+    canvas#qrCode.qr-code(v-show='qrCode')
+    .invalid-info(v-show='!qrCode')
+      span 請輸入 QR Code 連結
+    .row
+      button(@click='downloadQRCode')
+        | 下載
