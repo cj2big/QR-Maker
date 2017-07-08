@@ -13,7 +13,8 @@ new Vue({
       qrColor2: '#FFFFFF',
       qrColor3: '#AA8800',
       qrColor4: '#FFF8F0',
-      logoText: ''
+      logoText: '',
+      logoRatio: 0.8
   },
   computed: {
     drawLogo: function () {
@@ -24,11 +25,11 @@ new Vue({
       //if (this.qrSize > this.qrMax) this.qrSize = this.qrMax;
 
       if (this.qrUrl) {
-        var size = this.qrSize < this.qrMin
-            ? this.qrMin
-            : (this.qrSize > this.qrMax
-                ? this.qrMax
-                : this.qrSize);
+        var size = this.qrSize < this.qrMin ?
+          this.qrMin :
+          (this.qrSize > this.qrMax ?
+            this.qrMax :
+            this.qrSize);
         var qr = new QRious({
           element: this.qrCanvas,
           level: this.drawLogo ? 'H' : 'M',
@@ -68,7 +69,7 @@ new Vue({
     getLogoSize: function () {
       if (this.logoText.length > 0) {
         var factor = 1 - 64 / (this.qrUrl.length + 128);
-        return Math.sqrt(0.2 * factor * this.qrSize * this.qrSize / this.getFullSizeCount(this.logoText));
+        return Math.sqrt(0.22 * factor * this.logoRatio * this.qrSize * this.qrSize / this.getFullSizeCount(this.logoText));
       } else {
         return 0;
       }

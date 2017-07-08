@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.8.0/js/canvas-to-blob.min.js"></script>
     <title>My Page Title</title>
@@ -22,10 +22,7 @@
             <label>尺寸:</label>
             <input v-model="qrSize" :min="qrMin" :max="qrMax" type="number">
             <label>px</label>
-          </div>
-          <div class="col s3">
-            <label>logo</label>
-            <input v-model="logoText" type="text">
+            <input v-model="qrSize" type="range" min="64" max="1280" step="1">
           </div>
           <div class="col s3">
             <label>前景色</label>
@@ -34,6 +31,14 @@
           <div class="col s3">
             <label>背景色</label>
             <input v-model="qrColor2" type="color">
+          </div>
+          <div class="col s3">
+            <label>logo</label>
+            <input v-model="logoText" type="text">
+          </div>
+          <div class="col s3">
+            <label>logo比例</label>
+            <input v-model="logoRatio" type="range" min="0.3" max="1" step="0.01">
           </div>
           <div class="col s3">
             <label>LOGO文字色</label>
