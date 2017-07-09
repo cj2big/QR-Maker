@@ -8,52 +8,68 @@ new Vue({
       qrUrl: '',
       qrSize: 600,
       qrMin: 64,
-      qrMax: 1280,
+      qrMax: 1440,
       qrColor1: '#000000',
       qrColor2: '#FFFFFF',
       qrColor3: '#AA8800',
       qrColor4: '#FFF8F0',
+      logoType: '',
       logoText: '',
-      logoRatio: 0.8
+      logoImg: null,
+      logoScaling: 0.75
   },
   computed: {
+    drawTextLogo: function () {
+      return this.logoType == 'text' && this.logoText.length > 0;
+    },
+    drawImgLogo: function () {
+      return this.logoType == 'image' && this.logoImg;
+    },
     drawLogo: function () {
-      return this.logoText.length > 0;
+      return this.drawTextLogo || this.drawImgLogo;
+    },
+    drawSize: function () {
+      return this.qrSize < this.qrMin ?
+        this.qrMin :
+        (this.qrSize > this.qrMax ?
+          this.qrMax :
+          this.qrSize);
     },
     qrCode: function() {
-      //if (this.qrSize < this.qrMin) this.qrSize = this.qrMin;
-      //if (this.qrSize > this.qrMax) this.qrSize = this.qrMax;
-
       if (this.qrUrl) {
-        var size = this.qrSize < this.qrMin ?
-          this.qrMin :
-          (this.qrSize > this.qrMax ?
-            this.qrMax :
-            this.qrSize);
         var qr = new QRious({
           element: this.qrCanvas,
           level: this.drawLogo ? 'H' : 'M',
-          size: size,
+          size: this.drawSize,
           value: this.qrUrl,
           foreground: this.qrColor1,
           background: this.qrColor2
         });
 
         if (this.drawLogo) {
-          var ctx = this.qrCanvas.getContext('2d'),
-              len = 0.5 * size,
-              logoSize = this.getLogoSize();
-         console.log(logoSize);
+          var ctx = this.qrCanvas.getContext('2d');
 
-          ctx.font = '900 ' + logoSize + 'px Helvetica';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.lineJoin = 'round';
-          ctx.lineWidth = 0.2 * logoSize;
-          ctx.strokeStyle = this.qrColor4;
-          ctx.strokeText(this.logoText, len, len);
-          ctx.fillStyle = this.qrColor3;
-          ctx.fillText(this.logoText, len, len);
+          if (this.drawTextLogo) {
+            var len = 0.5 * this.drawSize,
+              logoFontSize = this.getLogoSize(this.getFullSizeCount(this.logoText));
+
+            ctx.font = '900 ' + logoFontSize + 'px Helvetica';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 0.2 * logoFontSize;
+            ctx.strokeStyle = this.qrColor4;
+            ctx.strokeText(this.logoText, len, len);
+            ctx.fillStyle = this.qrColor3;
+            ctx.fillText(this.logoText, len, len);
+          }
+          else if (this.drawImgLogo) {
+            var imgRatio = this.logoImg.width / this.logoImg.height,
+              drawHeight = this.getLogoSize(imgRatio),
+              drawWidth = imgRatio * drawHeight;
+
+            ctx.drawImage(this.logoImg, 0.5 * (this.drawSize - drawWidth), 0.5 * (this.drawSize - drawHeight), drawWidth, drawHeight);
+          }
         }
         return true;
       } else {
@@ -66,13 +82,30 @@ new Vue({
       var fullSizeCount = (text.match(/[\u3000-\uFF60\uFFE0-\uFFE6]/g) || []).length;
       return 0.5 * (fullSizeCount + text.length);
     },
-    getLogoSize: function () {
-      if (this.logoText.length > 0) {
+    getLogoSize: function (aspectRatio) {
+      if (aspectRatio > 0) {
         var factor = 1 - 64 / (this.qrUrl.length + 128);
-        return Math.sqrt(0.22 * factor * this.logoRatio * this.qrSize * this.qrSize / this.getFullSizeCount(this.logoText));
+        return Math.sqrt(0.24 * factor * this.qrSize * this.qrSize / aspectRatio) * this.logoScaling;
       } else {
         return 0;
       }
+    },
+    handleLogoImg: function (e) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        var img = new Image();
+        img.onload = () => {
+          this.logoImg = img;
+          var imgRatio = img.width / img.height,
+            drawHeight = this.getLogoSize(imgRatio),
+            drawWidth = imgRatio * drawHeight;
+
+          this.qrCanvas.getContext('2d').drawImage(img, 0.5 * (this.drawSize - drawWidth), 0.5 * (this.drawSize - drawHeight), drawWidth, drawHeight);
+        }
+        console.log(event);
+        img.src = event.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0]);
     },
     saveBlobAs: function (blob, fileName) {
       var a = document.createElement("a");
