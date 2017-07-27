@@ -12,6 +12,10 @@
         label px
         input(v-model='qrSize', type='range', min='64', max='1440', step='1')
       .col.s3
+        label 邊界
+        input(v-model='qrPadding', type='range', min='0', :max='0.2*qrSize', step='1')
+        span {{qrPadding}}
+      .col.s3
         label 前景色
         input(v-model='qrColor1', type='color')
       .col.s3
@@ -24,6 +28,7 @@
       .col.s3
         label logo比例
         input(v-model='logoScaling', type='range', min='0.5', max='1', step='0.01')
+        span {{logoScaling}}
       .col.s3
         label LOGO文字色
         input(v-model='qrColor3', type='color')
