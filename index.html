@@ -15,47 +15,47 @@
       <div class="main-wrapper">
         <div class="qr-options row">
           <div class="input-field col s12">
-            <label for="qrUrl">QR Code 連結</label>
+            <label for="qrUrl">QR Code</label>
             <input v-model="qrUrl" type="text">
           </div>
           <div class="qr-size col s3">
-            <label>尺寸:</label>
+            <label>Resize Canvas:</label>
             <input v-model="qrSize" :min="qrMin" :max="qrMax" type="number">
             <label>px</label>
             <input v-model="qrSize" type="range" min="64" max="1440" step="1">
           </div>
           <div class="col s3">
-            <label>邊界</label>
+            <label>Resize QR Code:</label>
             <input v-model="qrPadding" type="range" min="0" :max="0.2*qrSize" step="1"><span>{{qrPadding}}</span>
           </div>
           <div class="col s3">
-            <label>前景色</label>
+            <label>Change QR Code Color:</label>
             <input v-model="qrColor1" type="color">
           </div>
           <div class="col s3">
-            <label>背景色</label>
+            <label>Change QR Code Background:</label>
             <input v-model="qrColor2" type="color">
           </div>
           <div class="col s3">
             <input v-model="logoType" type="radio" value="text">
-            <label>logo</label>
+            <label>Enable Logo as Text:</label>
             <input v-model="logoText" type="text">
           </div>
           <div class="col s3">
-            <label>logo比例</label>
+            <label>Change Logo Size</label>
             <input v-model="logoScaling" type="range" min="0.5" max="1" step="0.01"><span>{{logoScaling}}</span>
           </div>
           <div class="col s3">
-            <label>LOGO文字色</label>
+            <label>Logo Color</label>
             <input v-model="qrColor3" type="color">
           </div>
           <div class="col s3">
-            <label>LOGO描邊色</label>
+            <label>Logo Padding Color</label>
             <input v-model="qrColor4" type="color">
           </div>
           <div class="col s3">
             <input v-model="logoType" type="radio" value="image">
-            <label>選擇logo圖檔</label>
+            <label>Insert Logo Image:</label>
             <input v-on:change="handleLogoImg" type="file">
           </div>
         </div>
